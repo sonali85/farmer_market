@@ -1,0 +1,154 @@
+item_price_dict = {"CH1": 3.11, "AP1": 6.00, "CF1": 11.23, "MK1": 4.75, "OM1": 3.69}
+
+
+def calculate_coffee(items_list):
+    total_price = 0
+    count_CF1 = 0
+    for i in items_list:
+        if i == "CF1":
+            count_CF1 = count_CF1 + 1
+
+    if count_CF1:
+        if count_CF1 % 2 == 0:
+            loop_count = count_CF1 / 2
+            for i in range(0, int(loop_count)):
+                total_price = total_price + item_price_dict["CF1"]
+        else:
+            count_CF1 = count_CF1 - 1
+            if count_CF1 == 0:
+                total_price = total_price + item_price_dict["CF1"]
+            else:
+                total_price = total_price + item_price_dict["CF1"]
+                loop_count = count_CF1 / 2
+                if loop_count == 1:
+                    loop_count = loop_count + 1
+                for i in range(0, int(loop_count)):
+                    total_price = total_price + item_price_dict["CF1"]
+    return total_price
+
+
+def calculate_apple(item_list):
+    total_price = 0
+    count_AP1 = 0
+    count_OM1 = 0
+
+    for i in item_list:
+        if i == "OM1":
+            count_OM1 = count_OM1 + 1
+
+    for i in item_list:
+        if i == "AP1":
+            count_AP1 = count_AP1 + 1
+
+    if count_OM1:
+        if count_AP1:
+            if count_AP1 < 3:
+                for i in range(0, int(count_AP1)):
+                    total_price = total_price + item_price_dict["AP1"]
+                total_price = total_price - 3
+            else:
+                for i in range(0, int(count_AP1)):
+                    total_price = (total_price + item_price_dict["AP1"])
+                total_price = (total_price - 4.50) - 2.25
+    else:
+        if count_AP1:
+            if count_AP1 < 3:
+                for i in range(0, int(count_AP1)):
+                    total_price = total_price + item_price_dict["AP1"]
+            else:
+                for i in range(0, int(count_AP1)):
+                    total_price = (total_price + item_price_dict["AP1"])
+                total_price = total_price - 4.50
+    return total_price
+
+
+def calculate_chai(item_list):
+    total_price = 0
+    count_CH1 = 0
+    for i in item_list:
+        if i == "CH1":
+            count_CH1 = count_CH1 + 1
+    if count_CH1:
+        for i in range(0, int(count_CH1)):
+            total_price = (total_price + item_price_dict["CH1"])
+
+    return total_price
+
+
+def calculate_milk(item_list):
+    count_CH1 = 0
+    count_MK1 = 0
+    total_price = 0
+    for i in item_list:
+        if i == "MK1":
+            count_MK1 = count_MK1 + 1
+    for i in item_list:
+        if i == "CH1":
+            count_CH1 = count_CH1 + 1
+    if count_CH1:
+        if count_MK1 == 1:
+            total_price = 0
+        elif count_MK1 == 0:
+            total_price = 0
+        else:
+            for i in range(0, int(count_MK1)):
+                total_price = (total_price + item_price_dict["MK1"])
+            total_price = total_price - item_price_dict["MK1"]
+    else:
+        if count_MK1:
+            for i in range(0, int(count_MK1)):
+                total_price = (total_price + item_price_dict["MK1"])
+
+    return total_price
+
+
+def calculate_oatmeal(item_list):
+    count_OM1 = 0
+    total_price = 0
+    for i in item_list:
+        if i == "OM1":
+            count_OM1 = count_OM1 + 1
+    if count_OM1:
+        for i in range(0, int(count_OM1)):
+            total_price = (total_price + item_price_dict["OM1"])
+
+    return total_price
+
+
+def calculate_bill(input_val):
+    items_list = input_val.split(",")
+    items_list = [i.strip() for i in items_list]
+    total_price = 0.00
+    ##Verify if input values in item_price_dict and are valid
+    if len(items_list) > 0:
+        check_result = [True if i in item_price_dict.keys() else False for i in items_list]
+
+        if check_result[0]:
+            ##Condition for BOGO on coffee
+            coffee_value = calculate_coffee(items_list)
+            ##Condition for apple  and oatmeal
+            apple_value = calculate_apple(items_list) \
+                ##Condition for chai
+            chai_value = calculate_chai(items_list)
+            ##Condition for milk and chai
+            milk_value = calculate_milk(items_list)
+            ##Condition for oatmeal
+            oatmeal_value = calculate_oatmeal(items_list)
+            total_price = coffee_value + apple_value + chai_value + milk_value + oatmeal_value
+            return total_price
+        else:
+            return False
+    else:
+        return False
+
+
+if __name__ == "__main__":
+
+    value_list = input()
+    value = calculate_bill(value_list)
+    if value:
+        print(str(value))
+    else:
+        print("Seems Wrong value is entered please exit and retry")
+
+
